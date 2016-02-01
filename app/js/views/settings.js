@@ -1,4 +1,4 @@
-var whatsApp = require('remote').getGlobal("whatsApp");
+var taskNagger = require('remote').getGlobal("taskNagger");
 var settings = require('remote').getGlobal('settings');
 var config = require('remote').getGlobal('config');
 var SettingsView = {
@@ -53,7 +53,7 @@ var SettingsView = {
     }
     config.saveConfiguration();
     config.applyConfiguration();
-    whatsApp.window.reload();
+    taskNagger.window.reload();
   }
 };
 

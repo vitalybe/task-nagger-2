@@ -1,6 +1,6 @@
 {
   "osx": {
-    "title": "WhatsApp",
+    "title": "Task nagger 2",
     "icon": "assets/osx/WhatsApp.icns",
     "icon-size": 80,
     "contents": [
@@ -18,9 +18,9 @@
     ]
   },
   "win": {
-    "tittle": "WhatsApp",
+    "tittle": "Task nagger 2",
     "icon": "assets/win/whatsapp.ico",
     "icon-size": 48,
-    "app-bundle-id": "WhatsApp"
+    "app-bundle-id": "TaskNagger2"
   }
 }

@@ -3,15 +3,15 @@
 
     module.exports = [
         {
-            label: 'WhatsApp Desktop',
+            label: 'Task nagger 2',
             submenu: [
                 {
-                    label: 'About WhatsApp',
+                    label: 'About Task nagger 2',
                     selector: 'orderFrontStandardAboutPanel:'
                 },
                 { type: 'separator' },
                 {
-                    label: 'Hide WhatsApp',
+                    label: 'Hide Task nagger 2',
                     accelerator: 'CmdOrCtrl+H',
                     selector: 'hide:'
                 },
@@ -74,12 +74,12 @@
                 {
                     label: 'Reload',
                     accelerator: 'CmdOrCtrl+R',
-                    click: function() { global.whatsApp.window.reload(); }
+                    click: function() { global.taskNagger.window.reload(); }
                 },
                 {
                     label: 'Toggle DevTools',
                     accelerator: 'Alt+CmdOrCtrl+I',
-                    click: function() { global.whatsApp.window.toggleDevTools(); }
+                    click: function() { global.taskNagger.window.toggleDevTools(); }
                 }
             ]
         },

@@ -43,7 +43,7 @@
         }
       },
       applyConfiguration: function () {
-        whatsApp.window.webContents.on('dom-ready', function (event, two) {
+        taskNagger.window.webContents.on('dom-ready', function (event, two) {
           var noAvatar = '.chat-avatar{display: none}';
           var noPreview = '.chat-secondary .chat-status{z-index: -999;}';
 
@@ -65,7 +65,7 @@
         });
 
         if(config.get("useProxy")) {
-          var session = whatsApp.window.webContents.session;
+          var session = taskNagger.window.webContents.session;
           var httpProxy = config.get("httpProxy");
           var httpsProxy = config.get("httpsProxy") || httpProxy;
           if(httpProxy) {
@@ -89,29 +89,28 @@
       }
     };
 
-    global.whatsApp = {
+    global.taskNagger = {
         init: function() {
-            whatsApp.createMenu();
-            whatsApp.createTray();
+            taskNagger.createMenu();
+            taskNagger.createTray();
 
-            whatsApp.clearCache();
+            taskNagger.clearCache();
             config.init();
-            whatsApp.openWindow();
+            taskNagger.openWindow();
             config.applyConfiguration();
         },
         createMenu: function() {
-            whatsApp.menu =
-                AppMenu.buildFromTemplate(require('./menu'));
-                AppMenu.setApplicationMenu(whatsApp.menu);
+            taskNagger.menu = AppMenu.buildFromTemplate(require('./menu'));
+            AppMenu.setApplicationMenu(taskNagger.menu);
         },
         createTray: function() {
-            whatsApp.tray = new AppTray(__dirname + '/assets/img/trayTemplate.png');
+            taskNagger.tray = new AppTray(__dirname + '/assets/img/trayTemplate.png');
 
-            whatsApp.tray.on('clicked', function() {
-                whatsApp.window.show();
+            taskNagger.tray.on('clicked', function() {
+                taskNagger.window.show();
             });
 
-            whatsApp.tray.setToolTip('WhatsApp Desktop');
+            taskNagger.tray.setToolTip('Task nagger 2');
         },
         clearCache: function() {
             try{
@@ -119,7 +118,7 @@
             }catch(e){}
         },
         openWindow: function (){
-          whatsApp.window = new BrowserWindow({
+          taskNagger.window = new BrowserWindow({
             "y": config.get("posY"),
             "x": config.get("posX"),
             "width": config.get("width"),
@@ -128,15 +127,15 @@
             "min-height": 600,
             "type": "toolbar",
             "node-integration": false,
-            "title": "WhatsApp"
+            "title": "Task nagger 2"
           });
 
-          whatsApp.window.loadUrl('https://web.whatsapp.com', {
+          taskNagger.window.loadUrl('https://www.rememberthemilk.com/app/', {
             userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.52 Safari/537.36'
           });
 
           if(config.get("useProxy")) {
-            var session = whatsApp.window.webContents.session;
+            var session = taskNagger.window.webContents.session;
             var httpProxy = config.get("httpProxy");
             var httpsProxy = config.get("httpsProxy") || httpProxy;
             if(httpProxy) {
@@ -144,9 +143,9 @@
             }
           }
 
-          whatsApp.window.show();
+          taskNagger.window.show();
 
-            whatsApp.window.on('page-title-updated', onlyOSX(function(event, title) {
+            taskNagger.window.on('page-title-updated', onlyOSX(function(event, title) {
                 var count = title.match(/\((\d+)\)/);
                     count = count ? count[1] : '';
 
@@ -156,35 +155,35 @@
                 }
             }));
 
-            whatsApp.window.on('page-title-updated', onlyWin(function(event, title) {
+            taskNagger.window.on('page-title-updated', onlyWin(function(event, title) {
                 var count = title.match(/\((\d+)\)/);
                     count = count ? count[1] : '';
 
                 if (parseInt(count) > 0) {
-                  if(!whatsApp.window.isFocused()){
-                    whatsApp.window.flashFrame(true);
+                  if(!taskNagger.window.isFocused()){
+                    taskNagger.window.flashFrame(true);
                   }
                   var badge = NativeImage.createFromPath(app.getAppPath() + "/assets/badges/badge-" + (count > 9 ? 0 : count) +".png");
-                  whatsApp.window.setOverlayIcon(badge, "new messages");
+                  taskNagger.window.setOverlayIcon(badge, "new messages");
                 } else {
-                  whatsApp.window.setOverlayIcon(null, "no new messages");
+                  taskNagger.window.setOverlayIcon(null, "no new messages");
                 }
             }));
 
-            whatsApp.window.webContents.on("new-window", function(e, url){
+            taskNagger.window.webContents.on("new-window", function(e, url){
                 require('shell').openExternal(url);
                 e.preventDefault();
             });
 
 
-            whatsApp.window.on('close', onlyOSX(function(e) {
-                if (whatsApp.window.forceClose !== true) {
+            taskNagger.window.on('close', onlyOSX(function(e) {
+                if (taskNagger.window.forceClose !== true) {
                     e.preventDefault();
-                    whatsApp.window.hide();
+                    taskNagger.window.hide();
                 }
             }));
 
-            whatsApp.window.on("close", function () {
+            taskNagger.window.on("close", function () {
               if(settings.window) {
                 settings.window.close();
                 settings.window = null;
@@ -198,11 +197,11 @@
             });
 
             app.on('before-quit', onlyOSX(function() {
-                whatsApp.window.forceClose = true;
+                taskNagger.window.forceClose = true;
             }));
 
             app.on('activate-with-no-open-windows', onlyOSX(function() {
-                whatsApp.window.show();
+                taskNagger.window.show();
             }));
 
             app.on('window-all-closed', onlyWin(function() {
@@ -271,6 +270,6 @@
 };
 
     app.on('ready', function() {
-        whatsApp.init();
+        taskNagger.init();
     });
 })(this);
