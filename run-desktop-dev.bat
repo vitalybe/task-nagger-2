@@ -1,0 +1,2 @@
+cd..
+ConEmu.exe /single /cmd cmd /k "%ConEmuDir%\..\init.bat && cd task-nagger-2 && FOR /L %%x IN (1,1,100) DO npm run dev" -cur_console:s50V:n:t:"desktop":C:"c:\Users\Vitaly\Dropbox\Utils\Cmder\icons\webpack.ico"
