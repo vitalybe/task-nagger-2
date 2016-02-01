@@ -1,5 +1,4 @@
 (function () {
-    var ipc = require('ipc');
     var ipcRenderer = require('electron').ipcRenderer;
 
     console.log("Waiting for load");

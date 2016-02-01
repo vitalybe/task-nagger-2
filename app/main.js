@@ -135,7 +135,7 @@
                 "node-integration": false,
                 "preload": join(__dirname, 'js', 'preload.js'),
                 "title": "Task nagger 2",
-                icon: "assets/img/icon.png"
+                "icon": "app/assets/img/icon.png"
             });
 
             taskNagger.window.loadUrl('https://www.rememberthemilk.com/app/', {
@@ -191,11 +191,38 @@
                 app.quit();
             }));
 
-            ipcMain.on('updatePendingTasks', function (event, data) {
-                var badgeCount = (data.count > 9 ? 0 : data.count);
-                var badge = NativeImage.createFromPath(app.getAppPath() + "/assets/badges/badge-" + badgeCount + ".png");
-                taskNagger.window.setOverlayIcon(badge, "Pending tasks");
-            });
+            ipcMain.on('updatePendingTasks', function () {
+                var regularNagInterval = null;
+                var isBlink = false;
+                var lastCount = 0;
+
+                return function (event, data) {
+                    if (data.count === lastCount) {
+                        return;
+                    }
+
+                    lastCount = data.count;
+                    var badgeCount = (lastCount > 9 ? 0 : lastCount);
+                    var badge = NativeImage.createFromPath(app.getAppPath() + "/assets/badges/badge-" + badgeCount + ".png");
+
+                    if (lastCount >= 0 && !regularNagInterval) {
+                        regularNagInterval = setInterval(function () {
+                            if (isBlink) {
+                                taskNagger.window.setOverlayIcon(badge, "Pending tasks");
+                            } else {
+                                taskNagger.window.setOverlayIcon(null, '');
+                            }
+
+                            isBlink = !isBlink;
+                        }, 500);
+                    } else if(lastCount === 0) {
+                        taskNagger.window.setOverlayIcon(null, '');
+                        clearInterval(regularNagInterval);
+                        regularNagInterval = null;
+                        isBlink = false;
+                    }
+                }
+            }());
 
         }
     };
