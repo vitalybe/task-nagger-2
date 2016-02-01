@@ -10,6 +10,8 @@
     var BrowserWindow = require('browser-window');
     var join = require('path').join;
     const ipcMain = require('electron').ipcMain;
+    const globalShortcut = require('electron').globalShortcut;
+
 
     global.onlyOSX = function (callback) {
         if (process.platform === 'darwin') {
@@ -215,7 +217,7 @@
 
                             isBlink = !isBlink;
                         }, 500);
-                    } else if(lastCount === 0) {
+                    } else if (lastCount === 0) {
                         taskNagger.window.setOverlayIcon(null, '');
                         clearInterval(regularNagInterval);
                         regularNagInterval = null;
@@ -223,6 +225,15 @@
                     }
                 }
             }());
+
+            globalShortcut.register('Shift+Super+D', function () {
+                if (taskNagger.window.isMinimized() || !taskNagger.window.isFocused()) {
+                    taskNagger.window.show();
+                }
+
+                taskNagger.window.webContents.send('newTaskFocus');
+            });
+
 
         }
     };

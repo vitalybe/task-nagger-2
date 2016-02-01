@@ -13,6 +13,11 @@
         }
     }
 
+    ipcRenderer.on('newTaskFocus', function () {
+        console.log("received message: newTaskFocus");
+        document.querySelector(".b-Hl-n-br-cr").focus();
+    });
+
     console.log("Waiting for load");
     document.addEventListener('DOMContentLoaded', function () {
         console.log("Loaded!");
