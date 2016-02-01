@@ -8,6 +8,8 @@
     var fileSystem = require('fs');
     var NativeImage = require('native-image');
     var BrowserWindow = require('browser-window');
+    var join = require('path').join;
+    const ipcMain = require('electron').ipcMain;
 
     global.onlyOSX = function(callback) {
         if (process.platform === 'darwin') {
@@ -127,6 +129,7 @@
             "min-height": 600,
             "type": "toolbar",
             "node-integration": false,
+            "preload": join(__dirname, 'js', 'preload.js'),
             "title": "Task nagger 2"
           });
 
@@ -145,36 +148,10 @@
 
           taskNagger.window.show();
 
-            taskNagger.window.on('page-title-updated', onlyOSX(function(event, title) {
-                var count = title.match(/\((\d+)\)/);
-                    count = count ? count[1] : '';
-
-                app.dock.setBadge(count);
-                if (parseInt(count) > 0) {
-                    app.dock.bounce('informational');
-                }
-            }));
-
-            taskNagger.window.on('page-title-updated', onlyWin(function(event, title) {
-                var count = title.match(/\((\d+)\)/);
-                    count = count ? count[1] : '';
-
-                if (parseInt(count) > 0) {
-                  if(!taskNagger.window.isFocused()){
-                    taskNagger.window.flashFrame(true);
-                  }
-                  var badge = NativeImage.createFromPath(app.getAppPath() + "/assets/badges/badge-" + (count > 9 ? 0 : count) +".png");
-                  taskNagger.window.setOverlayIcon(badge, "new messages");
-                } else {
-                  taskNagger.window.setOverlayIcon(null, "no new messages");
-                }
-            }));
-
             taskNagger.window.webContents.on("new-window", function(e, url){
                 require('shell').openExternal(url);
                 e.preventDefault();
             });
-
 
             taskNagger.window.on('close', onlyOSX(function(e) {
                 if (taskNagger.window.forceClose !== true) {
@@ -207,6 +184,13 @@
             app.on('window-all-closed', onlyWin(function() {
                 app.quit();
             }));
+
+            ipcMain.on('updatePendingTasks', function (event, data) {
+                var badgeCount = (data.count > 9 ? 0 : data.count);
+                var badge = NativeImage.createFromPath(app.getAppPath() + "/assets/badges/badge-" + badgeCount +".png");
+                taskNagger.window.setOverlayIcon(badge, "Pending tasks");
+            });
+
         }
     };
 
