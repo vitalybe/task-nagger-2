@@ -1,10 +1,9 @@
 (function () {
     var ipcRenderer = require('electron').ipcRenderer;
     var settings = require('remote').getGlobal('settings');
+    var config = require('remote').getGlobal('config');
 
     var LIST_HREFS_QUERY = "a.zl-Uk-xf";
-
-    // document.querySelectorAll("a.zl-Uk-xf")[0].innerText.trim()
 
     function getTaskLists() {
         var lists = null;
@@ -23,10 +22,10 @@
     }
 
     function updatePendingTasks() {
-
-        var listItem = document.querySelector('[href="#list/40296046"]');
-        if (listItem) {
-            var taskCountString = listItem.querySelector(".zl-Uk-yo").innerText;
+        var trackedListHref = config.get("trackedList");
+        var trackedListElement = trackedListHref ? document.querySelector('[href="'+trackedListHref+'"]') : null;
+        if(trackedListElement) {
+            var taskCountString = trackedListElement.querySelector(".zl-Uk-yo").innerText;
             var taskCount = taskCountString != "" ? parseInt(taskCountString) : 0;
             ipcRenderer.send('updatePendingTasks', {count: parseInt(taskCount)});
         } else {

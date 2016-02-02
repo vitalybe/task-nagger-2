@@ -4,7 +4,6 @@
     var app = require('app');
     var AppMenu = require('menu');
     var MenuItem = require('menu-item');
-    var AppTray = require('tray');
     var fileSystem = require('fs');
     var NativeImage = require('native-image');
     var BrowserWindow = require('browser-window');
@@ -77,8 +76,6 @@
     global.taskNagger = {
         init: function () {
             taskNagger.createMenu();
-            taskNagger.createTray();
-
             taskNagger.clearCache();
             config.init();
             taskNagger.openWindow();
@@ -87,15 +84,6 @@
         createMenu: function () {
             taskNagger.menu = AppMenu.buildFromTemplate(require('./menu'));
             AppMenu.setApplicationMenu(taskNagger.menu);
-        },
-        createTray: function () {
-            taskNagger.tray = new AppTray(__dirname + '/assets/img/trayTemplate.png');
-
-            taskNagger.tray.on('clicked', function () {
-                taskNagger.window.show();
-            });
-
-            taskNagger.tray.setToolTip('Task nagger 2');
         },
         clearCache: function () {
             try {
