@@ -33,7 +33,6 @@
         defaultSettings: {
             width: 1000,
             height: 720,
-            thumbSize: 0
         },
         currentSettings: {},
         init: function () {
@@ -49,27 +48,6 @@
             }
         },
         applyConfiguration: function () {
-            taskNagger.window.webContents.on('dom-ready', function (event, two) {
-                var noAvatar = '.chat-avatar{display: none}';
-                var noPreview = '.chat-secondary .chat-status{z-index: -999;}';
-
-                var thumbSize = '.image-thumb { width: ' + config.currentSettings.thumbSize + 'px  !important;' +
-                    'height: ' + config.currentSettings.thumbSize + 'px !important;}' +
-                    '.image-thumb img.image-thumb-body { width: auto !important;' +
-                    'height: ' + config.currentSettings.thumbSize + 'px !important;}';
-
-                if (config.currentSettings.hideAvatars) {
-                    this.insertCSS(noAvatar);
-                }
-                if (config.currentSettings.hidePreviews) {
-                    this.insertCSS(noPreview);
-                }
-
-                if (config.currentSettings.thumbSize) {
-                    this.insertCSS(thumbSize);
-                }
-            });
-
             if (config.get("useProxy")) {
                 var session = taskNagger.window.webContents.session;
                 var httpProxy = config.get("httpProxy");
