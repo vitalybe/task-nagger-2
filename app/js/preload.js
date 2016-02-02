@@ -1,5 +1,6 @@
 (function () {
     var ipcRenderer = require('electron').ipcRenderer;
+    var settings = require('remote').getGlobal('settings');
 
     var LIST_HREFS_QUERY = "a.zl-Uk-xf";
 
@@ -48,6 +49,7 @@
             var lists = getTaskLists();
             if (lists) {
                 console.log("Lists were found");
+                settings.setLists(lists);
                 updatePendingTasks();
                 setInterval(updatePendingTasks, 5000);
                 this.disconnect();

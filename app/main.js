@@ -240,6 +240,13 @@
     };
 
     global.settings = {
+        lists: [],
+        setLists: function(lists) {
+            this.lists = lists;
+        },
+        getLists: function() {
+            return this.lists;
+        },
         init: function () {
             // if there is already one instance of the window created show that one
             if (settings.window) {
