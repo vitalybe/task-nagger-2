@@ -197,6 +197,7 @@
                 var regularNagInterval = null;
                 var isBlink = false;
                 var lastCount = 0;
+                var badge = null;
 
                 return function (event, data) {
                     if (data.count === lastCount) {
@@ -205,7 +206,7 @@
 
                     lastCount = data.count;
                     var badgeCount = (lastCount > 9 ? 0 : lastCount);
-                    var badge = NativeImage.createFromPath(app.getAppPath() + "/assets/badges/badge-" + badgeCount + ".png");
+                    badge = NativeImage.createFromPath(app.getAppPath() + "/assets/badges/badge-" + badgeCount + ".png");
 
                     if (lastCount >= 0 && !regularNagInterval) {
                         regularNagInterval = setInterval(function () {

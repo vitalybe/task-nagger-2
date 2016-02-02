@@ -9,7 +9,7 @@
             var taskCount = taskCountString != "" ? parseInt(taskCountString) : 0;
             ipcRenderer.send('updatePendingTasks', {count: parseInt(taskCount)});
         } else {
-            console.warn("List item not found")
+            console.log("List item not found")
         }
     }
 
