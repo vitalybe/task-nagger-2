@@ -264,7 +264,7 @@
             settings.menu.append(new MenuItem(
                 {
                     label: 'Toggle DevTools',
-                    accelerator: 'Alt+CmdOrCtrl+O',
+                    accelerator: 'Alt+CmdOrCtrl+I',
                     visible: false,
                     click: function () {
                         settings.window.toggleDevTools();
