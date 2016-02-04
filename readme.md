@@ -14,12 +14,29 @@ If you'd like a version for the older version, open an issue for that or submit 
 
 * Choose a list to nag you about
 * Blink a badge with the nubmer of pending tasks, when they are due - Postpone or complete the tasks to stop the blinking
+* Global keyboard shortkey to add a task (WIN+SHIFT+D)
+
+## Screenshots
+
+Badge:
+
+![Badge](http://i.imgur.com/KMiyALp.png)
+
+Settings:
+
+![Settings](http://i.imgur.com/2Yj4FVd.png)
 
 ## Installation
 
-Download and run the [latest release](https://github.com/vitalybe/task-nagger-2/releases). 
+Download and run the [latest release](https://github.com/vitalybe/task-nagger-2/releases). Run `TaskNagger.exe` in the archive.
 
 A version for mac can be build from source. *Note:* Was not tested on Mac - Should work, but might not*
+
+## Getting started
+
+Once you can see your tasks, press `CTRL+,` and configure the list it should nag you about. For example, **Today** would be a good choice.
+
+Press `CTRL+SHIFT+D` to add tasks from anywhere.
 
 ## Contributions
 
