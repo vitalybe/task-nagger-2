@@ -4,6 +4,19 @@
     var config = require('remote').getGlobal('config');
 
     var LIST_HREFS_QUERY = "a.zl-Uk-xf";
+    var ADD_TASK_STRING = "Add a task...";
+
+    function getListData(listElement) {
+        return listElement.innerText.trim().split("\n");
+    }
+
+    function getListTaskCount(listElement) {
+        return getListData(listElement)[0];
+    }
+
+    function getListName(listElement) {
+        return getListData(listElement)[1];
+    }
 
     function getTaskLists() {
         var lists = null;
@@ -13,7 +26,7 @@
             lists = [].map.call(hrefs, function (href) {
                 return {
                     href: href["href"].replace("https://www.rememberthemilk.com/app/", ""),
-                    name: href.innerText.replace(/\d+/, "").trim()
+                    name: getListName(href)
                 }
             })
         }
@@ -23,9 +36,9 @@
 
     function updatePendingTasks() {
         var trackedListHref = config.get("trackedList");
-        var trackedListElement = trackedListHref ? document.querySelector('[href="'+trackedListHref+'"]') : null;
-        if(trackedListElement) {
-            var taskCountString = trackedListElement.querySelector(".zl-Uk-yo").innerText;
+        var trackedListElement = trackedListHref ? document.querySelector('[href="' + trackedListHref + '"]') : null;
+        if (trackedListElement) {
+            var taskCountString = getListTaskCount(trackedListElement);
             var taskCount = taskCountString != "" ? parseInt(taskCountString) : 0;
             ipcRenderer.send('updatePendingTasks', {count: parseInt(taskCount)});
         } else {
@@ -35,7 +48,15 @@
 
     ipcRenderer.on('newTaskFocus', function () {
         console.log("received message: newTaskFocus");
-        document.querySelector(".b-Hl-n-br-cr").focus();
+        var contentEditableElements = document.querySelectorAll("[contenteditable]");
+        var addTaskInput = [].filter.call(contentEditableElements, function (e) {
+            return e.parentElement.parentElement.innerText.trim() == ADD_TASK_STRING
+        });
+        if(addTaskInput.length != 1) {
+            throw new Error("Failed to find new task input");
+        }
+
+        addTaskInput[0].focus();
     });
 
     console.log("Waiting for DOMContentLoaded");
